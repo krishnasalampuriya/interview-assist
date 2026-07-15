@@ -1,0 +1,33 @@
+from collections import defaultdict
+
+from fastapi import WebSocket
+
+
+class LiveRoomManager:
+    def __init__(self) -> None:
+        self._connections: dict[str, set[WebSocket]] = defaultdict(set)
+
+    async def connect(self, session_id: str, websocket: WebSocket) -> None:
+        await websocket.accept()
+        self._connections[session_id].add(websocket)
+
+    def disconnect(self, session_id: str, websocket: WebSocket) -> None:
+        self._connections[session_id].discard(websocket)
+
+        if not self._connections[session_id]:
+            self._connections.pop(session_id, None)
+
+    async def broadcast(self, session_id: str, message: dict) -> None:
+        stale_connections: list[WebSocket] = []
+
+        for websocket in self._connections.get(session_id, set()).copy():
+            try:
+                await websocket.send_json(message)
+            except RuntimeError:
+                stale_connections.append(websocket)
+
+        for websocket in stale_connections:
+            self.disconnect(session_id, websocket)
+
+
+live_room_manager = LiveRoomManager()
