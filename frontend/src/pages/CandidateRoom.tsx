@@ -2,6 +2,7 @@ import { type FormEvent, useEffect, useRef, useState } from "react";
 import Editor from "@monaco-editor/react";
 import { Clock } from "lucide-react";
 
+import { CreatorNote } from "../components/CreatorNote";
 import { StatusPill } from "../components/StatusPill";
 import {
   createInterviewSocket,
@@ -144,6 +145,7 @@ export function CandidateRoom() {
             <div>
               <p className="text-sm font-semibold text-mint">Interview Assist</p>
               <h1 className="text-lg font-semibold sm:text-xl">Candidate coding room</h1>
+              <p className="mt-0.5 text-xs font-medium text-zinc-500">Created by Krishna Salampuriya</p>
             </div>
           </div>
           <div className="flex flex-wrap items-center justify-end gap-2">
@@ -270,6 +272,7 @@ export function CandidateRoom() {
         </section>
       </section>
       ) : null}
+      <CreatorNote />
     </main>
   );
 }

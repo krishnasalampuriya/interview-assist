@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, Copy, ExternalLink, Sparkles, Timer } from "lucide-react";
 
+import { CreatorNote } from "../components/CreatorNote";
 import { StatusPill } from "../components/StatusPill";
 import {
   createInterviewSession,
@@ -201,7 +202,8 @@ export function InterviewerDashboard() {
             <div className="brand-mark">IA</div>
             <div>
               <p className="text-sm font-semibold text-mint">Interview Assist</p>
-              <h1 className="text-lg font-semibold sm:text-xl">Live coding interview co-pilot</h1>
+              <h1 className="text-lg font-semibold sm:text-xl">AI interview question generator</h1>
+              <p className="mt-0.5 text-xs font-medium text-zinc-500">Created by Krishna Salampuriya</p>
             </div>
           </div>
           <StatusPill
@@ -498,6 +500,7 @@ export function InterviewerDashboard() {
 
         </aside>
       </section>
+      <CreatorNote />
     </main>
   );
 }
