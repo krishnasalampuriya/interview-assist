@@ -4,9 +4,11 @@
 
 :root {
   color: #15171f;
-  background: #fbfaf7;
+  background: #f6f3ed;
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
 }
 
 * {
@@ -15,10 +17,88 @@
 
 body {
   margin: 0;
+  min-width: 320px;
 }
 
 button,
+input,
 textarea,
 select {
   font: inherit;
+}
+
+button,
+select {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+::selection {
+  background: #c7ede6;
+  color: #10211f;
+}
+
+@layer components {
+  .app-bg {
+    @apply min-h-screen bg-[linear-gradient(180deg,#f8f6f0_0%,#f3f0e8_44%,#eef6f3_100%)] text-ink;
+  }
+
+  .topbar {
+    @apply sticky top-0 z-20 border-b border-white/70 bg-white/[0.85] backdrop-blur-xl;
+  }
+
+  .brand-mark {
+    @apply flex h-10 w-10 items-center justify-center rounded-lg bg-ink text-sm font-black text-white shadow-[0_12px_30px_rgba(21,23,31,0.18)];
+  }
+
+  .page-grid {
+    @apply mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:py-8;
+  }
+
+  .surface-card {
+    @apply rounded-lg border border-white/70 bg-white/[0.88] p-5 shadow-soft backdrop-blur md:p-6;
+  }
+
+  .soft-panel {
+    @apply rounded-lg border border-line/70 bg-[#fffaf1]/80 p-5 md:p-6;
+  }
+
+  .input-surface {
+    @apply rounded-md border border-line/80 bg-white/70 px-3 py-2.5 text-sm shadow-inner outline-none transition placeholder:text-zinc-400 focus:border-mint focus:bg-white focus:ring-4 focus:ring-teal-100/70;
+  }
+
+  .button-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-ink px-4 py-2.5 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(21,23,31,0.18)] transition hover:-translate-y-0.5 hover:bg-zinc-800 disabled:translate-y-0 disabled:bg-zinc-400 disabled:shadow-none;
+  }
+
+  .button-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-line/80 bg-white/90 px-4 py-2.5 text-sm font-semibold text-ink transition hover:-translate-y-0.5 hover:border-zinc-300 hover:bg-zinc-50 disabled:translate-y-0 disabled:bg-zinc-100 disabled:text-zinc-400;
+  }
+
+  .button-mint {
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-mint px-4 py-2.5 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(15,118,110,0.20)] transition hover:-translate-y-0.5 hover:bg-teal-800;
+  }
+
+  .question-card {
+    @apply rounded-lg border border-white/80 bg-white/90 p-5 shadow-[0_16px_40px_rgba(21,23,31,0.07)] transition hover:-translate-y-1 hover:border-teal-200 hover:shadow-[0_22px_55px_rgba(21,23,31,0.11)];
+  }
+
+  .tag {
+    @apply rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-[11px] font-semibold text-zinc-700;
+  }
+
+  .link-box {
+    @apply mt-4 block break-all rounded-md border border-teal-200 bg-white/90 p-3 font-mono text-xs text-teal-950 shadow-inner;
+  }
+
+  .code-panel {
+    @apply overflow-hidden rounded-lg border border-zinc-800 bg-[#11131a] shadow-[0_20px_60px_rgba(17,19,26,0.20)];
+  }
+
+  .empty-state {
+    @apply rounded-lg border border-dashed border-line/80 bg-white/65 p-6 text-sm text-zinc-600;
+  }
 }

@@ -136,14 +136,17 @@ export function CandidateRoom() {
   }
 
   return (
-    <main className="min-h-screen bg-[#fbfaf7] text-ink">
-      <header className="border-b border-line bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <div>
-            <p className="text-sm font-semibold text-mint">Interview Assist</p>
-            <h1 className="text-xl font-semibold">Candidate coding room</h1>
-          </div>
+    <main className="app-bg">
+      <header className="topbar">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <div className="flex items-center gap-3">
+            <div className="brand-mark">IA</div>
+            <div>
+              <p className="text-sm font-semibold text-mint">Interview Assist</p>
+              <h1 className="text-lg font-semibold sm:text-xl">Candidate coding room</h1>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center justify-end gap-2">
             {session?.candidate_name ? <StatusPill label={session.candidate_name} tone="neutral" /> : null}
             <StatusPill label={language} tone="neutral" />
             <StatusPill label={socketStatus === "connected" ? "Live" : "Offline"} tone={socketStatus === "connected" ? "success" : "warning"} />
@@ -153,20 +156,20 @@ export function CandidateRoom() {
       </header>
 
       {isLoading ? (
-        <div className="mx-auto max-w-7xl px-6 py-8">
-          <div className="rounded-lg border border-line bg-white p-6 text-sm text-zinc-600">Loading interview room...</div>
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+          <div className="surface-card text-sm text-zinc-600">Loading interview room...</div>
         </div>
       ) : null}
 
       {!isLoading && error ? (
-        <div className="mx-auto max-w-7xl px-6 py-8">
-          <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-sm text-red-800">{error}</div>
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+          <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-sm text-red-800 shadow-sm">{error}</div>
         </div>
       ) : null}
 
       {!isLoading && !error && !selectedQuestion ? (
-        <div className="mx-auto max-w-7xl px-6 py-8">
-          <div className="rounded-lg border border-line bg-white p-6">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+          <div className="surface-card">
             <h2 className="text-lg font-semibold">Waiting for interviewer</h2>
             <p className="mt-2 text-sm text-zinc-600">The interviewer has not selected a coding question yet.</p>
           </div>
@@ -174,21 +177,21 @@ export function CandidateRoom() {
       ) : null}
 
       {!isLoading && !error && selectedQuestion ? (
-      <section className="mx-auto grid max-w-7xl gap-6 px-6 py-8 lg:grid-cols-[0.8fr_1.2fr]">
+      <section className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[0.78fr_1.22fr] lg:py-8">
         <aside className="space-y-6">
           {!session?.candidate_name ? (
-            <form onSubmit={handleCandidateNameSubmit} className="rounded-lg border border-line bg-white p-6 shadow-soft">
+            <form onSubmit={handleCandidateNameSubmit} className="surface-card">
               <label className="grid gap-2">
                 <span className="text-sm font-semibold">Your name</span>
                 <input
                   value={candidateName}
                   onChange={(event) => setCandidateName(event.target.value)}
-                  className="rounded-md border border-line bg-[#fffdf9] px-3 py-2 text-sm outline-none transition focus:border-mint focus:ring-2 focus:ring-teal-100"
+                  className="input-surface"
                   placeholder="Enter your name"
                 />
               </label>
               <button
-                className="mt-4 w-full rounded-md bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-400"
+                className="button-primary mt-4 w-full"
                 disabled={isSavingName || candidateName.trim().length === 0}
                 type="submit"
               >
@@ -197,7 +200,7 @@ export function CandidateRoom() {
             </form>
           ) : null}
 
-          <div className="rounded-lg border border-line bg-white p-6 shadow-soft">
+          <div className="surface-card">
             <div className="mb-4 flex items-center justify-between">
               <StatusPill label={toTitleCase(selectedQuestion.difficulty)} tone={selectedQuestion.difficulty === "hard" ? "accent" : "neutral"} />
               <span className="inline-flex items-center gap-1 text-sm font-medium text-zinc-600">
@@ -209,14 +212,14 @@ export function CandidateRoom() {
             <p className="mt-4 text-sm leading-6 text-zinc-700">{selectedQuestion.summary}</p>
             <div className="mt-5 flex flex-wrap gap-2">
               {selectedQuestion.skills.map((skill) => (
-                <span key={skill} className="rounded-full bg-zinc-100 px-2 py-1 text-xs font-medium text-zinc-700">
+                <span key={skill} className="tag">
                   {skill}
                 </span>
               ))}
             </div>
           </div>
 
-          <div className="rounded-lg border border-line bg-panel p-6">
+          <div className="soft-panel">
             <h3 className="text-sm font-semibold uppercase tracking-wide text-zinc-500">Evaluation Focus</h3>
             <ul className="mt-4 space-y-2 text-sm leading-6 text-zinc-700">
               {selectedQuestion.evaluation_rubric.map((item) => (
@@ -226,16 +229,16 @@ export function CandidateRoom() {
           </div>
         </aside>
 
-        <section className="rounded-lg border border-line bg-white shadow-soft">
-          <div className="flex items-center justify-between border-b border-line px-5 py-3">
+        <section className="code-panel">
+          <div className="flex items-center justify-between border-b border-zinc-800 bg-[#181b24] px-5 py-3">
             <div>
-              <h2 className="text-sm font-semibold">Solution Editor</h2>
-              <p className="text-xs text-zinc-500">{session.status === "ended" ? "Interview ended" : "Changes are shared live"}</p>
+              <h2 className="text-sm font-semibold text-zinc-100">Solution Editor</h2>
+              <p className="text-xs text-zinc-400">{session.status === "ended" ? "Interview ended" : "Changes are shared live"}</p>
             </div>
             <select
               value={language}
               onChange={(event) => handleLanguageChange(event.target.value)}
-              className="rounded-md border border-line bg-white px-3 py-2 text-sm outline-none focus:border-mint"
+              className="rounded-md border border-zinc-700 bg-[#11131a] px-3 py-2 text-sm text-zinc-100 outline-none transition focus:border-mint"
             >
               <option>Python</option>
               <option>C++</option>
@@ -260,7 +263,7 @@ export function CandidateRoom() {
             />
           </div>
 
-          <div className="flex items-center justify-between border-t border-line px-5 py-4 text-sm text-zinc-600">
+          <div className="flex items-center justify-between border-t border-zinc-800 bg-[#181b24] px-5 py-4 text-sm text-zinc-300">
             <span>{session.status === "ended" ? "The interviewer ended this interview." : "Your code is visible to the interviewer live."}</span>
             <StatusPill label={session.status} tone="neutral" />
           </div>

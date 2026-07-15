@@ -194,12 +194,15 @@ export function InterviewerDashboard() {
   const canGenerate = resumeText.trim().length >= 20 && jobDescription.trim().length >= 20 && !isGenerating;
 
   return (
-    <main className="min-h-screen bg-[#fbfaf7] text-ink">
-      <header className="border-b border-line bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <div>
-            <p className="text-sm font-semibold text-mint">Interview Assist</p>
-            <h1 className="text-xl font-semibold">Live coding interview co-pilot</h1>
+    <main className="app-bg">
+      <header className="topbar">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
+          <div className="flex items-center gap-3">
+            <div className="brand-mark">IA</div>
+            <div>
+              <p className="text-sm font-semibold text-mint">Interview Assist</p>
+              <h1 className="text-lg font-semibold sm:text-xl">Live coding interview co-pilot</h1>
+            </div>
           </div>
           <StatusPill
             label={health ? `${health.app_name} online` : healthError ? "API offline" : "Checking API"}
@@ -208,15 +211,17 @@ export function InterviewerDashboard() {
         </div>
       </header>
 
-      <section className="mx-auto grid max-w-7xl gap-6 px-6 py-8 lg:grid-cols-[1.1fr_0.9fr]">
+      <section className="page-grid">
         <div className="space-y-6">
-          <div className="rounded-lg border border-line bg-white p-6 shadow-soft">
+          <div className="surface-card">
             <div className="mb-5 flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-semibold">Create Interview</h2>
-                <p className="mt-1 text-sm text-zinc-600">Paste resume and JD text to recommend a role-fit question.</p>
+                <h2 className="text-xl font-semibold">Create Interview</h2>
+                <p className="mt-1 text-sm text-zinc-600">Paste resume and JD text to recommend a role-fit coding round.</p>
               </div>
-              <Sparkles className="h-5 w-5 text-plum" />
+              <div className="rounded-lg border border-fuchsia-100 bg-fuchsia-50 p-2 text-plum">
+                <Sparkles className="h-5 w-5" />
+              </div>
             </div>
 
             <div className="grid gap-4">
@@ -225,7 +230,7 @@ export function InterviewerDashboard() {
                 <textarea
                   value={resumeText}
                   onChange={(event) => setResumeText(event.target.value)}
-                  className="min-h-44 rounded-md border border-line bg-[#fffdf9] p-4 text-sm outline-none transition focus:border-mint focus:ring-2 focus:ring-teal-100"
+                  className="input-surface min-h-44 resize-y p-4"
                   placeholder="Paste resume text here..."
                 />
               </label>
@@ -235,7 +240,7 @@ export function InterviewerDashboard() {
                 <textarea
                   value={jobDescription}
                   onChange={(event) => setJobDescription(event.target.value)}
-                  className="min-h-36 rounded-md border border-line bg-[#fffdf9] p-4 text-sm outline-none transition focus:border-mint focus:ring-2 focus:ring-teal-100"
+                  className="input-surface min-h-36 resize-y p-4"
                   placeholder="Paste JD text here..."
                 />
               </label>
@@ -245,7 +250,7 @@ export function InterviewerDashboard() {
                 <select
                   value={preferredDifficulty}
                   onChange={(event) => setPreferredDifficulty(event.target.value as "" | "easy" | "medium" | "hard")}
-                  className="rounded-md border border-line bg-[#fffdf9] px-3 py-3 text-sm outline-none transition focus:border-mint focus:ring-2 focus:ring-teal-100"
+                  className="input-surface"
                 >
                   <option value="">Auto detect</option>
                   <option value="easy">Easy</option>
@@ -261,7 +266,7 @@ export function InterviewerDashboard() {
               ) : null}
 
               <button
-                className="inline-flex items-center justify-center gap-2 rounded-md bg-ink px-4 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-400"
+                className="button-primary py-3"
                 disabled={!canGenerate}
                 onClick={handleGenerateQuestions}
               >
@@ -272,7 +277,7 @@ export function InterviewerDashboard() {
           </div>
 
           {discussionQuestions.length > 0 ? (
-            <section className="rounded-lg border border-line bg-white p-6">
+            <section className="surface-card">
               <div className="mb-5 flex items-center justify-between gap-4">
                 <div>
                   <h2 className="text-lg font-semibold">Resume Discussion Questions</h2>
@@ -282,7 +287,7 @@ export function InterviewerDashboard() {
               </div>
               <div className="grid gap-3">
                 {discussionQuestions.map((item) => (
-                  <article key={item.question} className="rounded-md border border-line bg-[#fffdf9] p-4">
+                  <article key={item.question} className="rounded-md border border-line/70 bg-white/75 p-4 shadow-sm">
                     <div className="mb-2 flex flex-wrap items-center gap-2">
                       <StatusPill label={item.signal} tone="neutral" />
                     </div>
@@ -296,13 +301,13 @@ export function InterviewerDashboard() {
 
           <div className="grid gap-4 md:grid-cols-3">
             {recommendations.length === 0 ? (
-              <div className="rounded-lg border border-dashed border-line bg-white p-5 text-sm text-zinc-600 md:col-span-3">
+              <div className="empty-state md:col-span-3">
                 Recommendations will appear here after you paste resume and JD text.
               </div>
             ) : null}
 
             {recommendations.map((recommendation) => (
-              <article key={recommendation.question.id} className="rounded-lg border border-line bg-white p-5">
+              <article key={recommendation.question.id} className="question-card">
                 <div className="mb-4 flex items-start justify-between gap-3">
                   <StatusPill
                     label={toTitleCase(recommendation.question.difficulty)}
@@ -317,7 +322,7 @@ export function InterviewerDashboard() {
                 <p className="mt-3 text-xs leading-5 text-zinc-600">{recommendation.question.summary}</p>
                 <div className="mt-4 flex flex-wrap gap-1.5">
                   {recommendation.question.skills.slice(0, 4).map((skill) => (
-                    <span key={skill} className="rounded-full bg-zinc-100 px-2 py-1 text-[11px] font-medium text-zinc-700">
+                    <span key={skill} className="tag">
                       {skill}
                     </span>
                   ))}
@@ -340,7 +345,7 @@ export function InterviewerDashboard() {
                       <ExternalLink className="h-3.5 w-3.5" />
                     </a>
                     <button
-                      className="rounded-md bg-ink px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-400"
+                      className="rounded-md bg-ink px-3 py-1.5 text-xs font-semibold text-white transition hover:-translate-y-0.5 hover:bg-zinc-800 disabled:translate-y-0 disabled:bg-zinc-400"
                       disabled={!session || selectingQuestionId !== null}
                       onClick={() => handleSelectQuestion(recommendation.question.id)}
                     >
@@ -359,7 +364,7 @@ export function InterviewerDashboard() {
 
         <aside className="space-y-6">
           {interviewPlan ? (
-            <div className="rounded-lg border border-line bg-white p-6">
+            <div className="surface-card">
               <h2 className="text-lg font-semibold">Interview Plan</h2>
               <div className="mt-4 grid gap-3 text-sm">
                 <PlanRow label="Level" value={interviewPlan.candidate_level ?? "Auto"} />
@@ -374,7 +379,7 @@ export function InterviewerDashboard() {
           ) : null}
 
           {recommendations.length > 0 ? (
-            <div className="rounded-lg border border-line bg-white p-6">
+            <div className="surface-card">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h2 className="text-lg font-semibold">Timer</h2>
@@ -391,29 +396,29 @@ export function InterviewerDashboard() {
                   value={timerMinutes}
                   onChange={(event) => setTimerMinutes(Number(event.target.value))}
                   onBlur={() => setTimerMinutes(clampTimerMinutes(timerMinutes))}
-                  className="rounded-md border border-line bg-[#fffdf9] px-3 py-2 text-sm outline-none transition focus:border-mint focus:ring-2 focus:ring-teal-100"
+                  className="input-surface"
                 />
               </label>
             </div>
           ) : null}
 
           {session?.candidate_link ? (
-            <div className="rounded-lg border border-teal-200 bg-teal-50 p-6">
+            <div className="rounded-lg border border-teal-200/80 bg-[linear-gradient(135deg,#ecfdf5_0%,#f0fdfa_100%)] p-6 shadow-[0_18px_45px_rgba(15,118,110,0.12)]">
               <h2 className="text-lg font-semibold text-teal-950">Candidate Link Ready</h2>
               <p className="mt-2 text-sm text-teal-800">Share this link after confirming the question and timer with the candidate.</p>
-              <code className="mt-4 block break-all rounded-md border border-teal-200 bg-white p-3 text-xs text-teal-900">
+              <code className="link-box">
                 {session.candidate_link}
               </code>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <button
-                  className="inline-flex items-center justify-center gap-2 rounded-md bg-mint px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800"
+                  className="button-mint"
                   onClick={handleCopyCandidateLink}
                 >
                   <Copy className="h-4 w-4" />
                   {didCopyLink ? "Copied" : "Copy Link"}
                 </button>
                 <a
-                  className="inline-flex items-center justify-center rounded-md border border-teal-200 bg-white px-4 py-2 text-sm font-semibold text-teal-900 hover:bg-teal-50"
+                  className="button-secondary border-teal-200 text-teal-950 hover:bg-teal-50"
                   href={session.candidate_link}
                   target="_blank"
                   rel="noreferrer"
@@ -425,7 +430,7 @@ export function InterviewerDashboard() {
           ) : null}
 
           {session?.selected_question ? (
-            <div className="rounded-lg border border-line bg-white p-6">
+            <div className="surface-card">
               <div className="mb-4 flex items-start justify-between gap-4">
                 <div>
                   <h2 className="text-lg font-semibold">Live Candidate Workspace</h2>
@@ -439,26 +444,26 @@ export function InterviewerDashboard() {
                 <StatusPill label={session.status} tone="neutral" />
                 <StatusPill label={remainingSeconds !== null ? formatSeconds(remainingSeconds) : "Timer waiting"} tone="warning" />
               </div>
-              <pre className="max-h-[360px] min-h-48 overflow-auto rounded-md bg-[#15171f] p-4 text-xs leading-5 text-zinc-100">{session.candidate_code || "Waiting for candidate to start typing..."}</pre>
+              <pre className="code-panel max-h-[360px] min-h-48 p-4 text-xs leading-5 text-zinc-100">{session.candidate_code || "Waiting for candidate to start typing..."}</pre>
               <label className="mt-5 grid gap-2">
                 <span className="text-sm font-semibold">Interviewer notes</span>
                 <textarea
                   value={interviewerNotes}
                   onChange={(event) => setInterviewerNotes(event.target.value)}
-                  className="min-h-28 rounded-md border border-line bg-[#fffdf9] p-3 text-sm outline-none transition focus:border-mint focus:ring-2 focus:ring-teal-100"
+                  className="input-surface min-h-28 resize-y p-3"
                   placeholder="Add observations about communication, hints, debugging, and edge cases..."
                 />
               </label>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <button
-                  className="inline-flex items-center justify-center rounded-md border border-line bg-white px-4 py-2.5 text-sm font-semibold hover:bg-zinc-50 disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:text-zinc-400"
+                  className="button-secondary"
                   disabled={isEndingInterview || session.status === "ended" || session.status === "evaluated"}
                   onClick={handleEndInterview}
                 >
                   {isEndingInterview ? "Ending..." : "End Interview"}
                 </button>
                 <button
-                  className="inline-flex items-center justify-center rounded-md bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-400"
+                  className="button-primary"
                   disabled={isEvaluating}
                   onClick={handleEvaluate}
                 >
@@ -469,13 +474,13 @@ export function InterviewerDashboard() {
           ) : null}
 
           {session?.evaluation ? (
-            <div className="rounded-lg border border-line bg-white p-6">
+            <div className="surface-card">
               <div className="mb-5 flex items-start justify-between gap-4">
                 <div>
                   <h2 className="text-lg font-semibold">Final Evaluation</h2>
                   <p className="mt-1 text-sm text-zinc-600">{session.evaluation.generated_by}</p>
                 </div>
-                <div className="rounded-md bg-ink px-3 py-2 text-center text-white">
+                <div className="rounded-md bg-ink px-4 py-3 text-center text-white shadow-[0_12px_28px_rgba(21,23,31,0.20)]">
                   <div className="text-xl font-semibold">{session.evaluation.overall_score}</div>
                   <div className="text-[11px] uppercase tracking-wide">Score</div>
                 </div>
