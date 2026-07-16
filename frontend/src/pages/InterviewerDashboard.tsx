@@ -325,29 +325,6 @@ export function InterviewerDashboard() {
             </div>
           </div>
 
-          {discussionQuestions.length > 0 ? (
-            <section className="surface-card">
-              <div className="mb-5 flex items-center justify-between gap-4">
-                <div>
-                  <h2 className="text-lg font-semibold">Resume Discussion Questions</h2>
-                  <p className="mt-1 text-sm text-zinc-600">Use these before the coding round to probe resume depth.</p>
-                </div>
-                <StatusPill label={`${discussionQuestions.length} prompts`} tone="success" />
-              </div>
-              <div className="grid gap-3">
-                {discussionQuestions.map((item) => (
-                  <article key={item.question} className="rounded-md border border-line/70 bg-white/75 p-4 shadow-sm">
-                    <div className="mb-2 flex flex-wrap items-center gap-2">
-                      <StatusPill label={item.signal} tone="neutral" />
-                    </div>
-                    <h3 className="text-sm font-semibold leading-6">{item.question}</h3>
-                    <p className="mt-2 text-xs leading-5 text-zinc-600">{item.reason}</p>
-                  </article>
-                ))}
-              </div>
-            </section>
-          ) : null}
-
           <div className="grid gap-4 md:grid-cols-3">
             {recommendations.length === 0 ? (
               <div className="empty-state md:col-span-3">
@@ -409,6 +386,29 @@ export function InterviewerDashboard() {
               </article>
             ))}
           </div>
+
+          {discussionQuestions.length > 0 ? (
+            <section className="surface-card">
+              <div className="mb-5 flex items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-lg font-semibold">Resume Discussion Questions</h2>
+                  <p className="mt-1 text-sm text-zinc-600">Use these before the coding round to probe resume depth.</p>
+                </div>
+                <StatusPill label={`${discussionQuestions.length} prompts`} tone="success" />
+              </div>
+              <div className="grid gap-3">
+                {discussionQuestions.map((item) => (
+                  <article key={item.question} className="rounded-md border border-line/70 bg-white/75 p-4 shadow-sm">
+                    <div className="mb-2 flex flex-wrap items-center gap-2">
+                      <StatusPill label={item.signal} tone="neutral" />
+                    </div>
+                    <h3 className="text-sm font-semibold leading-6">{item.question}</h3>
+                    <p className="mt-2 text-xs leading-5 text-zinc-600">{item.reason}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ) : null}
         </div>
 
         <aside className="space-y-6">
