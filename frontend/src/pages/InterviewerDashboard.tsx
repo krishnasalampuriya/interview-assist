@@ -231,7 +231,7 @@ export function InterviewerDashboard() {
             <div className="brand-mark">IA</div>
             <div>
               <p className="text-sm font-semibold text-mint">Interview Assist</p>
-              <h1 className="text-lg font-semibold sm:text-xl">AI interview question generator</h1>
+              <h1 className="text-lg font-semibold sm:text-xl">AI-powered live coding interview workspace</h1>
               <p className="mt-0.5 text-xs font-medium text-zinc-500">Created by Krishna Salampuriya</p>
             </div>
           </div>
