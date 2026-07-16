@@ -265,7 +265,7 @@ export function InterviewerDashboard() {
                   value={resumeText}
                   onChange={(event) => setResumeText(event.target.value)}
                   className="input-surface min-h-44 resize-y p-4"
-                  placeholder="Paste resume text here..."
+                  placeholder="Upload resume or paste the text from resume directly here..."
                 />
               </label>
 
@@ -284,7 +284,7 @@ export function InterviewerDashboard() {
                   value={jobDescription}
                   onChange={(event) => setJobDescription(event.target.value)}
                   className="input-surface min-h-36 resize-y p-4"
-                  placeholder="Paste JD text here..."
+                  placeholder="Upload JD or paste the text from JD directly here..."
                 />
               </label>
 
