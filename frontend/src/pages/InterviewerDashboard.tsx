@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, Copy, ExternalLink, FileUp, Sparkles, Timer } from "lucide-react";
 
+import { AppLogo } from "../components/AppLogo";
 import { CreatorNote } from "../components/CreatorNote";
 import { StatusPill } from "../components/StatusPill";
 import {
@@ -227,14 +228,7 @@ export function InterviewerDashboard() {
     <main className="app-bg">
       <header className="topbar">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <div className="flex items-center gap-3">
-            <div className="brand-mark">IA</div>
-            <div>
-              <p className="text-sm font-semibold text-mint">Interview Assist</p>
-              <h1 className="text-lg font-semibold sm:text-xl">AI-powered live coding interview workspace</h1>
-              <p className="mt-0.5 text-xs font-medium text-zinc-500">Created by Krishna Salampuriya</p>
-            </div>
-          </div>
+          <AppLogo subtitle="AI-powered live coding interview workspace" />
           <StatusPill
             label={health ? `${health.app_name} online` : healthError ? "API offline" : "Checking API"}
             tone={health ? "success" : healthError ? "warning" : "neutral"}

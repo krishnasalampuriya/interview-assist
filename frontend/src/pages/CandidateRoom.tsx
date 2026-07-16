@@ -2,6 +2,7 @@ import { type FormEvent, useEffect, useRef, useState } from "react";
 import Editor from "@monaco-editor/react";
 import { Clock } from "lucide-react";
 
+import { AppLogo } from "../components/AppLogo";
 import { CreatorNote } from "../components/CreatorNote";
 import { StatusPill } from "../components/StatusPill";
 import {
@@ -140,14 +141,7 @@ export function CandidateRoom() {
     <main className="app-bg">
       <header className="topbar">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <div className="flex items-center gap-3">
-            <div className="brand-mark">IA</div>
-            <div>
-              <p className="text-sm font-semibold text-mint">Interview Assist</p>
-              <h1 className="text-lg font-semibold sm:text-xl">Candidate coding room</h1>
-              <p className="mt-0.5 text-xs font-medium text-zinc-500">Created by Krishna Salampuriya</p>
-            </div>
-          </div>
+          <AppLogo subtitle="Candidate coding room" />
           <div className="flex flex-wrap items-center justify-end gap-2">
             {session?.candidate_name ? <StatusPill label={session.candidate_name} tone="neutral" /> : null}
             <StatusPill label={language} tone="neutral" />
