@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 
+from app.api.documents import router as documents_router
 from app.api.interviews import router as interviews_router
 from app.api.live import router as live_router
 from app.api.questions import router as questions_router
@@ -9,6 +10,7 @@ from app.models.health import HealthResponse
 
 
 router = APIRouter()
+router.include_router(documents_router)
 router.include_router(interviews_router)
 router.include_router(live_router)
 router.include_router(questions_router)

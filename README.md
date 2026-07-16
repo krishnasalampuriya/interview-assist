@@ -4,6 +4,8 @@ Interview Assist is a lightweight live coding interview assistant for engineerin
 
 V1 is a no-login demo app where an interviewer pastes a candidate resume and job description, gets 3 role-fit coding question recommendations from a curated RAG-style question bank, shares a candidate link, watches the candidate code live, and generates an AI evaluation report.
 
+Resume and job description input supports both direct text paste and document upload. The backend extracts text from PDF, DOCX, TXT, MD, CSV, JSON, and RTF-style plain text files.
+
 ## Project Structure
 
 ```text
@@ -51,6 +53,7 @@ Question endpoints:
 
 ```text
 GET  http://localhost:8000/api/questions
+POST http://localhost:8000/api/documents/extract-text
 POST http://localhost:8000/api/recommendations/questions
 POST http://localhost:8000/api/interviews
 GET  http://localhost:8000/api/interviews/{session_id}

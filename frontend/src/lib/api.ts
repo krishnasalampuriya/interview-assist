@@ -101,6 +101,13 @@ export type InterviewSessionResponse = {
   session: InterviewSession;
 };
 
+export type ExtractedDocumentResponse = {
+  filename: string;
+  content_type: string | null;
+  character_count: number;
+  text: string;
+};
+
 export async function fetchHealth(): Promise<HealthResponse> {
   const response = await fetch(`${API_BASE_URL}/health`);
 
@@ -158,6 +165,23 @@ export async function fetchInterviewSession(sessionId: string): Promise<Intervie
 
   if (!response.ok) {
     throw new Error(`Interview session fetch failed with ${response.status}`);
+  }
+
+  return response.json();
+}
+
+export async function extractDocumentText(file: File): Promise<ExtractedDocumentResponse> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch(`${API_BASE_URL}/api/documents/extract-text`, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const details = await response.text();
+    throw new Error(details || `Text extraction failed with ${response.status}`);
   }
 
   return response.json();

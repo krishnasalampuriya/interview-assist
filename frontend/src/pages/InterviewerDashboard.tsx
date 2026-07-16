@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, Copy, ExternalLink, Sparkles, Timer } from "lucide-react";
+import { ArrowRight, Copy, ExternalLink, FileUp, Sparkles, Timer } from "lucide-react";
 
 import { CreatorNote } from "../components/CreatorNote";
 import { StatusPill } from "../components/StatusPill";
@@ -8,6 +8,7 @@ import {
   createInterviewSocket,
   endInterviewSession,
   evaluateInterviewSession,
+  extractDocumentText,
   fetchHealth,
   type DiscussionQuestion,
   type HealthResponse,
@@ -23,6 +24,9 @@ export function InterviewerDashboard() {
   const [healthError, setHealthError] = useState<string | null>(null);
   const [resumeText, setResumeText] = useState("");
   const [jobDescription, setJobDescription] = useState("");
+  const [resumeFileName, setResumeFileName] = useState<string | null>(null);
+  const [jdFileName, setJdFileName] = useState<string | null>(null);
+  const [uploadingField, setUploadingField] = useState<"resume" | "jd" | null>(null);
   const [preferredDifficulty, setPreferredDifficulty] = useState<"" | "easy" | "medium" | "hard">("");
   const [recommendations, setRecommendations] = useState<RecommendedQuestion[]>([]);
   const [interviewPlan, setInterviewPlan] = useState<InterviewPlan | null>(null);
@@ -192,6 +196,31 @@ export function InterviewerDashboard() {
     window.setTimeout(() => setDidCopyLink(false), 1600);
   }
 
+  async function handleDocumentUpload(field: "resume" | "jd", file: File | null) {
+    if (!file) {
+      return;
+    }
+
+    setUploadingField(field);
+    setRecommendationError(null);
+
+    try {
+      const extracted = await extractDocumentText(file);
+
+      if (field === "resume") {
+        setResumeText(extracted.text);
+        setResumeFileName(extracted.filename);
+      } else {
+        setJobDescription(extracted.text);
+        setJdFileName(extracted.filename);
+      }
+    } catch (error) {
+      setRecommendationError(error instanceof Error ? error.message : "Unable to extract text from uploaded file.");
+    } finally {
+      setUploadingField(null);
+    }
+  }
+
   const canGenerate = resumeText.trim().length >= 20 && jobDescription.trim().length >= 20 && !isGenerating;
 
   return (
@@ -228,7 +257,16 @@ export function InterviewerDashboard() {
 
             <div className="grid gap-4">
               <label className="grid gap-2">
-                <span className="text-sm font-medium">Candidate resume text</span>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <span className="text-sm font-medium">Candidate resume text</span>
+                  <UploadControl
+                    id="resume-upload"
+                    label={uploadingField === "resume" ? "Extracting..." : "Upload Resume"}
+                    disabled={uploadingField !== null}
+                    fileName={resumeFileName}
+                    onFileSelect={(file) => handleDocumentUpload("resume", file)}
+                  />
+                </div>
                 <textarea
                   value={resumeText}
                   onChange={(event) => setResumeText(event.target.value)}
@@ -238,7 +276,16 @@ export function InterviewerDashboard() {
               </label>
 
               <label className="grid gap-2">
-                <span className="text-sm font-medium">Job description</span>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <span className="text-sm font-medium">Job description</span>
+                  <UploadControl
+                    id="jd-upload"
+                    label={uploadingField === "jd" ? "Extracting..." : "Upload JD"}
+                    disabled={uploadingField !== null}
+                    fileName={jdFileName}
+                    onFileSelect={(file) => handleDocumentUpload("jd", file)}
+                  />
+                </div>
                 <textarea
                   value={jobDescription}
                   onChange={(event) => setJobDescription(event.target.value)}
@@ -537,6 +584,45 @@ function PlanTags({ label, values }: { label: string; values: string[] }) {
           </span>
         ))}
       </div>
+    </div>
+  );
+}
+
+function UploadControl({
+  id,
+  label,
+  disabled,
+  fileName,
+  onFileSelect,
+}: {
+  id: string;
+  label: string;
+  disabled: boolean;
+  fileName: string | null;
+  onFileSelect: (file: File | null) => void;
+}) {
+  return (
+    <div className="flex flex-wrap items-center justify-end gap-2">
+      {fileName ? <span className="max-w-48 truncate text-xs font-medium text-zinc-500">{fileName}</span> : null}
+      <input
+        id={id}
+        type="file"
+        accept=".pdf,.docx,.txt,.md,.markdown,.csv,.json,.rtf,text/*,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        className="sr-only"
+        disabled={disabled}
+        onChange={(event) => {
+          onFileSelect(event.target.files?.[0] ?? null);
+          event.target.value = "";
+        }}
+      />
+      <label
+        htmlFor={id}
+        className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-line/80 bg-white/90 px-3 py-1.5 text-xs font-semibold text-ink transition hover:-translate-y-0.5 hover:border-zinc-300 hover:bg-zinc-50 aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:bg-zinc-100 aria-disabled:text-zinc-400"
+        aria-disabled={disabled}
+      >
+        <FileUp className="h-3.5 w-3.5" />
+        {label}
+      </label>
     </div>
   );
 }

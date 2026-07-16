@@ -26,8 +26,8 @@ V1 will be simple, no-login, and session-link based.
 ### Interviewer Flow
 
 1. Interviewer opens the app.
-2. Interviewer pastes candidate resume text.
-3. Interviewer pastes job description text.
+2. Interviewer pastes candidate resume text or uploads a resume document.
+3. Interviewer pastes job description text or uploads a JD document.
 4. Backend analyzes the resume and JD.
 5. App suggests 3-4 resume-based discussion questions for the interviewer.
 6. App recommends 3 suitable coding questions.
@@ -218,6 +218,7 @@ Initial endpoints:
 
 - Resume text input
 - JD text input
+- Resume/JD upload with text extraction
 - Generate questions button
 - Loading/progress state
 
@@ -337,7 +338,7 @@ Current v1 recommendation behavior:
 
 ## Future Version Ideas
 
-- Resume PDF upload and text extraction
+- Broader document extraction formats beyond PDF, DOCX, and plain-text files
 - Real Python code execution
 - Secure Docker-based runner
 - Larger question bank
