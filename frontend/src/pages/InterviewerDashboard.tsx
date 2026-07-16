@@ -289,13 +289,13 @@ export function InterviewerDashboard() {
               </label>
 
               <label className="grid gap-2 md:max-w-64">
-                <span className="text-sm font-medium">Difficulty override</span>
+                <span className="text-sm font-medium">Preferred question level</span>
                 <select
                   value={preferredDifficulty}
                   onChange={(event) => setPreferredDifficulty(event.target.value as "" | "easy" | "medium" | "hard")}
                   className="input-surface"
                 >
-                  <option value="">Auto detect</option>
+                  <option value="">Let AI decide</option>
                   <option value="easy">Easy</option>
                   <option value="medium">Medium</option>
                   <option value="hard">Hard</option>
@@ -313,7 +313,7 @@ export function InterviewerDashboard() {
                 disabled={!canGenerate}
                 onClick={handleGenerateQuestions}
               >
-                {isGenerating ? "Generating..." : "Generate 3 Questions"}
+                {isGenerating ? "Preparing interview..." : "Start Interview Process"}
                 <ArrowRight className="h-4 w-4" />
               </button>
             </div>
